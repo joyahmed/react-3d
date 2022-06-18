@@ -5,7 +5,7 @@ import Earth from './components/earth/Index';
 
 const App = () => {
 	return (
-		<div className='flex items-center justify-center h-screen w-screen bg-black'>
+		<div className='flex items-center justify-center h-screen w-screen bg-[#01040c]'>
 			<Canvas>
 				<Suspense fallback={null}>
 					<Earth />

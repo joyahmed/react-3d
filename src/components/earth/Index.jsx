@@ -7,6 +7,7 @@ import EarthNormalMap from '../../assets/textures/8k_earth_normal_map.jpg';
 import EarthSpecularMap from '../../assets/textures/8k_earth_specular_map.jpg';
 import { useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
+import * as THREE from 'three';
 
 const Earth = props => {
 	const [colorMap, normalMap, specularmap, cloudsMap] = useLoader(
@@ -16,7 +17,17 @@ const Earth = props => {
 
 	return (
 		<>
-			<ambientLight intensity={0.5} />
+			<ambientLight intensity={1} />
+			<mesh>
+				<sphereGeometry args={[1.005, 32, 32]} />
+				<meshPhongMaterial
+					map={cloudsMap}
+					opacity={0.4}
+					depthWrite={true}
+					transparent={true}
+					side={THREE.DoubleSide}
+				/>
+			</mesh>
 			<mesh>
 				<sphereGeometry args={[1, 32, 32]} />
 				<meshPhongMaterial specularmap={specularmap} />
@@ -27,7 +38,7 @@ const Earth = props => {
 					enableRotate={true}
 					zoomSpeed={0.6}
 					panSpeed={0.5}
-					rotatieSpeed={0.4}
+					rotateSpeed={0.4}
 				/>
 			</mesh>
 		</>
