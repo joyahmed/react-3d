@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { OrbitControls, Stars } from '@react-three/drei';
 
 import EarthDayMap from '../../assets/textures/8k_earth_daymap.jpg';
 import EarthCloudMap from '../../assets/textures/8k_earth_clouds.jpg';
 import EarthNormalMap from '../../assets/textures/8k_earth_normal_map.jpg';
 import EarthSpecularMap from '../../assets/textures/8k_earth_specular_map.jpg';
-import { useLoader } from '@react-three/fiber';
+import { useFrame, useLoader } from '@react-three/fiber';
 import { TextureLoader } from 'three';
 import * as THREE from 'three';
 
@@ -14,6 +14,17 @@ const Earth = props => {
 		TextureLoader,
 		[EarthDayMap, EarthNormalMap, EarthSpecularMap, EarthCloudMap]
 	);
+
+	const earthRef = useRef();
+	const cloudsRef = useRef();
+
+	useFrame(({ clock }) => {
+		const elapsedTime = clock.getElapsedTime();
+		earthRef.current.rotation.y = elapsedTime / 6;
+		earthRef.current.rotation.x = elapsedTime / 10;
+		cloudsRef.current.rotation.y = elapsedTime / 6;
+		cloudsRef.current.rotation.x = elapsedTime / 10;
+	});
 
 	return (
 		<>
@@ -27,7 +38,7 @@ const Earth = props => {
 				saturation={0}
 				fade={true}
 			/>
-			<mesh>
+			<mesh ref={cloudsRef}>
 				<sphereGeometry args={[1.005, 32, 32]} />
 				<meshPhongMaterial
 					map={cloudsMap}
@@ -37,7 +48,7 @@ const Earth = props => {
 					side={THREE.DoubleSide}
 				/>
 			</mesh>
-			<mesh>
+			<mesh ref={earthRef}>
 				<sphereGeometry args={[1, 32, 32]} />
 				<meshPhongMaterial specularMap={specularMap} />
 				<meshStandardMaterial
