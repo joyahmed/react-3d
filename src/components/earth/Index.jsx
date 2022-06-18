@@ -10,14 +10,15 @@ import { TextureLoader } from 'three';
 import * as THREE from 'three';
 
 const Earth = props => {
-	const [colorMap, normalMap, specularmap, cloudsMap] = useLoader(
+	const [colorMap, normalMap, specularMap, cloudsMap] = useLoader(
 		TextureLoader,
 		[EarthDayMap, EarthNormalMap, EarthSpecularMap, EarthCloudMap]
 	);
 
 	return (
 		<>
-			<ambientLight intensity={1} />
+			{/* <ambientLight intensity={1} /> */}
+			<pointLight color='#f6f3ea' position={[2, 0, 5]} intensity={1.2} />
 			<Stars
 				radius={300}
 				depth={60}
@@ -38,8 +39,13 @@ const Earth = props => {
 			</mesh>
 			<mesh>
 				<sphereGeometry args={[1, 32, 32]} />
-				<meshPhongMaterial specularmap={specularmap} />
-				<meshStandardMaterial map={colorMap} normalMap={normalMap} />
+				<meshPhongMaterial specularMap={specularMap} />
+				<meshStandardMaterial
+					map={colorMap}
+					normalMap={normalMap}
+					metalness={0.4}
+					roughness={0.7}
+				/>
 				<OrbitControls
 					enableZoom={true}
 					enablePan={true}
